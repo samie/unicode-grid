@@ -50,6 +50,7 @@ public class MyGrid extends Grid<Integer> {
 
             }).setRenderer(unicodeRenderer);
         }
+        
         for (char i = 'A'; i <= 'F'; i++) {
             addColumn(new Column<String, Integer>("" + i) {
                 @Override
