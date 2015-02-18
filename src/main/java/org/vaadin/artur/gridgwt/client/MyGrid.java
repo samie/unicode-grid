@@ -1,65 +1,67 @@
 package org.vaadin.artur.gridgwt.client;
 
-import com.vaadin.client.data.DataChangeHandler;
-import com.vaadin.client.data.DataSource;
+import com.vaadin.client.renderers.HtmlRenderer;
 import com.vaadin.client.renderers.Renderer;
 import com.vaadin.client.widget.grid.RendererCellReference;
 import com.vaadin.client.widgets.Grid;
 
 public class MyGrid extends Grid<Integer> {
-	private Renderer<String> unicodeRenderer = new Renderer<String>() {
 
-		@Override
-		public void render(RendererCellReference cellRef, String arg1) {
-			int charCode = cellRef.getColumnIndex() + cellRef.getRowIndex()
-					* 16;
-			cellRef.getElement().setInnerHTML(
-					"&#x" + (Integer.toString(charCode, 16)) + ";");
-		}
-	};
+    private Renderer<String> unicodeRenderer = new HtmlRenderer() {
 
-	public MyGrid() {
-		super();
-		setWidth("800px");
-		setSelectionMode(SelectionMode.SINGLE);
+        @Override
+        public void render(RendererCellReference cell, String data) {
+            int charCode = cell.getColumnIndex() + cell.getRowIndex()
+                    * 16;
+            super.render(cell, "<span class=\"char\">&#x" + (Integer.toString(charCode, 16)) + ";" + "</span>");
+        }
+    };
 
-		// Row header
-		addColumn(new Column<String, Integer>("") {
+    public MyGrid() {
+        super();
+        setWidth("100%");
+        setSelectionMode(SelectionMode.NONE);
 
-			@Override
-			public String getValue(Integer arg0) {
-				return null;
-			}
+        // Row header
+        addColumn(new Column<String, Integer>("") {
 
-		}).setRenderer(new Renderer<String>() {
+            @Override
+            public String getValue(Integer arg0) {
+                return null;
+            }
 
-			@Override
-			public void render(RendererCellReference arg0, String arg1) {
-				arg0.getElement().setInnerText(
-						Integer.toString(arg0.getRowIndex(), 16));
+        }).setRenderer(new HtmlRenderer() {
 
-			}
-		}).setWidth(60);
-		for (int i = 0; i < 10; i++) {
-			addColumn(new Column<String, Integer>("" + i) {
-				@Override
-				public String getValue(Integer row) {
-					return "";
-				}
+            @Override
+            public void render(RendererCellReference cell, String data) {
+                String rowIndex = Integer.toString(cell.getRowIndex(), 16);
+                while (rowIndex.length() < 4) {
+                    rowIndex = "0" + rowIndex;
+                }
+                super.render(cell, "<span  class=\"index\">" + rowIndex + "</span>");
+            }
+        }).setWidth(65);
+        for (int i = 0; i < 10; i++) {
+            addColumn(new Column<String, Integer>("" + i) {
+                @Override
+                public String getValue(Integer row) {
+                    return "";
+                }
 
-			}).setRenderer(unicodeRenderer);
-		}
-		for (char i = 'A'; i <= 'F'; i++) {
-			addColumn(new Column<String, Integer>("" + i) {
-				@Override
-				public String getValue(Integer row) {
-					return "";
-				}
+            }).setRenderer(unicodeRenderer);
+        }
+        for (char i = 'A'; i <= 'F'; i++) {
+            addColumn(new Column<String, Integer>("" + i) {
+                @Override
+                public String getValue(Integer row) {
+                    return "";
+                }
 
-			}).setRenderer(unicodeRenderer);
-		}
+            }).setRenderer(unicodeRenderer);
+        }
 
-		// Set a dummy data source which only defines the number of rows
-		setDataSource(new DummyDataSource(0xffff));
-	}
+        // Set a dummy data source which only defines the number of rows
+        setDataSource(new DummyDataSource(0xffff));
+    }
+    
 }
