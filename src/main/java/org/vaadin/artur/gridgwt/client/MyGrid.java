@@ -20,6 +20,7 @@ public class MyGrid extends Grid<Integer> {
     public MyGrid() {
         super();
         setWidth("100%");
+        setHeight("300px");
         setSelectionMode(SelectionMode.NONE);
 
         // Row header
@@ -40,7 +41,7 @@ public class MyGrid extends Grid<Integer> {
                 }
                 super.render(cell, "<span  class=\"index\">" + rowIndex + "</span>");
             }
-        }).setWidth(65);
+        }).setWidth(60);
         for (int i = 0; i < 10; i++) {
             addColumn(new Column<String, Integer>("" + i) {
                 @Override
@@ -50,7 +51,7 @@ public class MyGrid extends Grid<Integer> {
 
             }).setRenderer(unicodeRenderer);
         }
-        
+
         for (char i = 'A'; i <= 'F'; i++) {
             addColumn(new Column<String, Integer>("" + i) {
                 @Override
@@ -64,5 +65,4 @@ public class MyGrid extends Grid<Integer> {
         // Set a dummy data source which only defines the number of rows
         setDataSource(new DummyDataSource(0xffff));
     }
-    
 }

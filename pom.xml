@@ -90,6 +90,7 @@
                     <modules>
                         <module>org.vaadin.artur.gridgwt.GridApp</module>
                     </modules>
+                    <closureCompiler>false</closureCompiler>
                 </configuration>
             </plugin>
             <plugin>
